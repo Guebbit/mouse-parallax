@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <style>
+    body{
+      margin: 0;
+    }
+    #object-wrapper{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100vw;
+      height: 100vh;
+    }
+    #parallax-object{
+      position: relative;
+      overflow: hidden;
+      width: 800px;
+      height: 800px;
+      background: rgba(0,0,0,0.05);
+    }
+    #parallax-object > *{
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      margin: 0;
+    }
+    #center{
+      background: green;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      z-index: 5;
+    }
+  </style>
+</head>
+<body>
+  <div id="object-wrapper">
+    <div id="parallax-object">
+      <img src="https://raw.githubusercontent.com/oscicen/oscicen.github.io/master/img/depth-1.png"
+           data-parallax-movement-intensity="-10"
+      >
+      <img src="https://raw.githubusercontent.com/oscicen/oscicen.github.io/master/img/depth-2.png"
+           data-parallax-movement-intensity="-50"
+      >
+      <img src="https://raw.githubusercontent.com/oscicen/oscicen.github.io/master/img/depth-3.png"
+           data-parallax-movement-intensity="-100"
+      >
+      <h1>FOLLOW</h1>
+      <div id="center"
+           data-parallax-movement-intensity="0"
+      ></div>
+    </div>
+  </div>
+</body>
+</html>
+
