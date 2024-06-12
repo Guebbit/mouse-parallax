@@ -4,13 +4,10 @@
     "target": "es6",
     "module": "CommonJS",
     "moduleResolution": "node",
+    "skipLibCheck": true,
     "esModuleInterop": true,
-    "baseUrl": "src",
     "sourceMap": true,
-    "lib": [
-      "dom",
-      "esnext"
-    ],
+    "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
     "resolveJsonModule": true,
@@ -18,13 +15,20 @@
     "declaration": true,
     "declarationMap": true,
     "declarationDir": "./types",
+    "baseUrl": "src",
+    "lib": [
+      "dom",
+      "esnext"
+    ],
     "types": [
-      "cypress",
-      "node"
+      "node",
+      "@types/jest"
     ]
   },
   "include": [
-    "./src",
-    "cypress/**/*.ts"
+    "./src"
+  ],
+  "exclude": [
+    "./node_modules"
   ]
 }
