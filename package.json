@@ -61,7 +61,7 @@
     }
   },
   "dependencies": {
-    "@guebbit/js-toolkit": "^1.0.2",
+    "@guebbit/js-toolkit": "^1.0.3",
     "lodash": "^4.17.21"
   }
 }

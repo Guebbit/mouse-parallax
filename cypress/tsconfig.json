@@ -9,6 +9,6 @@
   "include": [
     "../node_modules/cypress/**/*.ts",
     "../cypress.config.ts",
-    "./**/*.cy.ts"
+    "*.cy.ts"
   ]
 }

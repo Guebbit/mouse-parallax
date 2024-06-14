@@ -1,6 +1,5 @@
 import mouseParallax, { executeMouseParallax } from '../../src/index';
 
-// ENABLE\DISABLE mouse parallax && put fixed value instead of mouse (for animations), maybe for some seconds
 describe('Test mouseParallax (visual test only)', () => {
 
   beforeEach(() => {

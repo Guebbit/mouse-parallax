@@ -55,7 +55,8 @@
         "*.cy.ts"
       ],
       "rules": {
-        "filenames/match-regex": "off"
+        "filenames/match-regex": "off",
+        "@typescript-eslint/naming-convention": "off"
       }
     },
     {
