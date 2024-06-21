@@ -1,6 +1,6 @@
 {
   "name": "@guebbit/mouse-parallax",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "AGPLv3.0",
   "sideEffects": false,
   "main": "dist/index.js",
@@ -20,9 +20,9 @@
     "lint:fix": "eslint \"*/**/*.{ts,js,json}\" --fix",
     "cy:serve": "http-server ./cypress/public/ -i -c-1 -d --cors -a localhost -p 8080",
     "cy:open": "cypress open",
-    "cy:run": "cypress run",
-    "docs:dev": "vitepress dev --port 8080",
-    "docs:build": "vitepress build",
+    "cy:run": "cypress run docs",
+    "docs:dev": "vitepress dev docs --port 8080",
+    "docs:build": "vitepress build docs",
     "docs:preview": "vitepress preview",
     "prepublish": "npm run build && npm run test && npm run cy:run && npm run lint && npm run docs:build",
     "publish:public": "npm run prepublish && npm publish --access public"
@@ -61,7 +61,7 @@
     }
   },
   "dependencies": {
-    "@guebbit/js-toolkit": "^1.0.3",
+    "@guebbit/js-toolkit-scroll": "file:../js-toolkit-scroll",
     "lodash": "^4.17.21"
   }
 }

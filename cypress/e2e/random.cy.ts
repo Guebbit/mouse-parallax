@@ -1,12 +1,15 @@
 import mouseParallax, { executeMouseParallax } from '../../src/index';
 
-describe('Test mouseParallax (visual test only)', () => {
+describe('Every possible combination (remember to check the "Free movement" test)', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:8080/random.html');
+    // starting point
+    cy.get('#parallax-object')
+      .centerMouse();
   });
 
-  it('Custom use', () => {
+  it('Custom use (old)', () => {
     cy.document()
       .then($document => {
         cy.get('#parallax-object > *')
@@ -17,12 +20,14 @@ describe('Test mouseParallax (visual test only)', () => {
               return;
             executeMouseParallax(parallaxObject, 800, 400)
             //after 1 second, another movement
-            setTimeout(() => executeMouseParallax(parallaxObject, 1200, 800), 1000)
+            setTimeout(() => executeMouseParallax(parallaxObject, 1200, 800), 2000)
+            // write the instructions for better view
+            cy.get('#instructions').then($el => $el.html(JSON.stringify(parallaxObject, null, 2)))
           });
       });
   });
 
-  it('Random Objects', () => {
+  it('Random Objects (old)', () => {
     cy.document()
       .then($document => {
         cy.get('#parallax-object > *')
@@ -36,5 +41,19 @@ describe('Test mouseParallax (visual test only)', () => {
             items[2].intensityY = 0;
           });
       });
+  });
+
+  /**
+   * Manual test
+   */
+  it('Free movement', () => {
+    cy.document()
+      .then($document =>
+        cy.get('#parallax-object')
+          .then($element => {
+            mouseParallax($element.children().toArray(), $element[0], $document)
+              ?.build(200);
+          })
+      );
   });
 })

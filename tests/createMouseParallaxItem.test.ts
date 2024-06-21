@@ -1,4 +1,4 @@
-import { createMouseParallaxItem, type IMouseParallaxItemsMap } from '../src/index';
+import { createMouseParallaxItem, type IMouseParallaxInstructions } from '../src/index';
 
 describe('createMouseParallaxItem tests are just for safety, only cypress can test this piece correctly', () => {
   let element: HTMLElement;
@@ -9,7 +9,7 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
   });
 
   test('Should return default values when dataset is empty', () => {
-    const result: IMouseParallaxItemsMap = createMouseParallaxItem(element);
+    const result: IMouseParallaxInstructions = createMouseParallaxItem(element);
 
     expect(result.element).toBe(element);
     expect(result.intensityX).toBe(100);
@@ -20,7 +20,7 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
   test('Should return values from dataset when they are manually set', () => {
     element.dataset.parallaxMovementIntensity = '150';
 
-    let result: IMouseParallaxItemsMap = createMouseParallaxItem(element);
+    let result: IMouseParallaxInstructions = createMouseParallaxItem(element);
 
     expect(result.intensityX).toBe(150);
     expect(result.intensityY).toBe(150);
@@ -47,7 +47,7 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
   test('Should change the style of the element based on the parallax movement', () => {
     element.dataset.parallaxMovementSpeed = '500';
 
-    const result: IMouseParallaxItemsMap = createMouseParallaxItem(element);
+    const result: IMouseParallaxInstructions = createMouseParallaxItem(element);
 
     expect(result.speed).toBe(500);
     expect(element.style.transition).toContain('top 500ms');
@@ -60,7 +60,7 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
     element.dataset.parallaxMovementIntensityX = '200';
     element.dataset.parallaxMovementSpeed = '300';
 
-    const result: IMouseParallaxItemsMap = createMouseParallaxItem(element);
+    const result: IMouseParallaxInstructions = createMouseParallaxItem(element);
 
     expect(result.intensityX).toBe(200); // parallaxMovementIntensityX overrides parallaxMovementIntensity
     expect(result.intensityY).toBe(150);

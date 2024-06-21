@@ -29,12 +29,13 @@ const parallaxImages = [
   }
 ];
 
-// TODO Automated use before going regular
-// TODO ENABLE\DISABLE mouse parallax && put fixed value instead of mouse (for animations), maybe for some seconds
-describe('Test mouseParallax (visual test only)', () => {
+describe('Animated wallpaper (remember to check the "Free movement" test)', () => {
 
   beforeEach(() => {
     cy.visit('http://localhost:8080/empty.html');
+    // starting point
+    cy.get('#parallax-object')
+      .centerMouse();
   });
 
   it('Regular use', () => {
@@ -48,6 +49,19 @@ describe('Test mouseParallax (visual test only)', () => {
             parallaxObject.build();
           });
       });
+  });
+
+  /**
+   * Manual test
+   */
+  it('Free movement', () => {
+    cy.document()
+      .then($document =>
+        cy.get('#parallax-object')
+          .then($element => {
+            mouseParallax($element.children().toArray(), $element[0], $document)?.build(200);
+          })
+      );
   });
 })
 

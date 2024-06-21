@@ -35,7 +35,7 @@
       height: 100px;
       border-radius: 50%;
     }
-    #async-text-background{
+    #async-backward-text-background{
       background: blue;
       opacity: 0.5;
       z-index: 3;
@@ -43,16 +43,20 @@
       height: 50px;
     }
     #vertical-text,
+    #horizontal-text,
     #low-intensity-text,
     #backward-text{
       z-index: 4;
       margin: 0;
     }
     #low-intensity-text{
-      color: white;
+      color: yellow;
     }
     #vertical-text{
       color: purple;
+    }
+    #horizontal-text{
+      color: pink;
     }
     #center{
       background: green;
@@ -81,7 +85,7 @@
       >
 
       <div
-        id="async-text-background"
+        id="async-backward-text-background"
         data-parallax-movement-intensity=-80"
         data-parallax-movement-speed="100"
       ></div>
@@ -101,12 +105,17 @@
       <h1
         id="vertical-text"
         data-parallax-movement-intensity-x="0"
-      >VERTICAL ONLY</h1>
+      >VERTICAL</h1>
+
+      <h1
+        id="horizontal-text"
+        data-parallax-movement-intensity-y="0"
+      >HORIZONTAL</h1>
 
       <h1
         id="low-intensity-text"
         data-parallax-movement-intensity="50"
-      >HORIZONTAL ONLY</h1>
+      >LOW</h1>
 
       <h1
         data-parallax-movement-intensity-x="a"
@@ -119,5 +128,6 @@
       ></div>
     </div>
   </div>
+  <pre id="instructions"></pre>
 </body>
 </html>

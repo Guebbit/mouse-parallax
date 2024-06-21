@@ -1,4 +1,3 @@
-
 /**
  * Calculate the relative position of a point (x,y) within a container.
  * Needed to calculate the parallax effect based on the movement of the mouse (or touch or custom).

@@ -1,12 +1,6 @@
 import calculateMouseParallax from "./calculateMouseParallax";
-// TODO watchers - check su speed, intensità, etc per vedere se vengono cambiati dei valori, poi ritriggerare eventuali "build" sull'elemento
-import type { IMouseParallaxItemsMap } from './createMouseParallaxItem';
+import type { IMouseParallax } from './mouseParallax';
 
-export interface IMouseParallaxMap {
-  container :HTMLElement
-  items :IMouseParallaxItemsMap[]
-  build :(css?: boolean, throttleIntensity?: number) => void
-}
 
 /**
  *
@@ -15,7 +9,7 @@ export interface IMouseParallaxMap {
  * @param {number} x - mouse/touch position X axis
  * @param {number} y - mouse/touch position Y axis
  */
-export default ({ container, items = [] } :IMouseParallaxMap, x = 0, y = 0) => {
+export default ({ container, items = [] } :IMouseParallax, x = 0, y = 0) => {
   // width and height of parent
   const { offsetWidth, offsetHeight } = container;
   // parent position

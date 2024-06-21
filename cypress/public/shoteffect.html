@@ -28,9 +28,6 @@
       transform: translate(-50%, -50%);
       margin: 0;
     }
-    #parallax-object > img {
-      transition: 0.2s all;
-    }
     #center-point{
       background: green;
       width: 50px;
@@ -38,27 +35,46 @@
       border-radius: 50%;
       z-index: 5;
     }
+    #unused-item{
+      background: red;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      z-index: 6;
+    }
   </style>
 </head>
 <body>
   <div id="object-wrapper">
     <div id="parallax-object">
       <img
+        id="depth-1"
         src="images/depth-1.png"
         data-parallax-movement-intensity="-10"
+        data-parallax-movement-speed="200"
       >
       <img
+        id="depth-2"
         src="images/depth-2.png"
         data-parallax-movement-intensity="-50"
+        data-parallax-movement-speed="200"
       >
       <img
+        id="depth-3"
         src="images/depth-3.png"
         data-parallax-movement-intensity="-100"
+        data-parallax-movement-speed="200"
       >
-      <h1>FOLLOW <small><small>(no transition)</small></small></h1>
+      <h1 data-parallax-movement-speed="0">
+        FOLLOW <small><small>(no transition)</small></small>
+      </h1>
       <div
         id="center-point"
         data-parallax-movement-intensity="0"
+        data-parallax-movement-speed="200"
+      ></div>
+      <div
+        id="unused-item"
       ></div>
     </div>
   </div>

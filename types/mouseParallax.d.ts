@@ -1,4 +1,4 @@
-import { type IMouseParallaxMap } from './executeMouseParallax';
+import { type IMouseParallax } from './executeMouseParallax';
 /**
  *
  *
@@ -17,6 +17,6 @@ import { type IMouseParallaxMap } from './executeMouseParallax';
  * @param parent - container \ limit
  * @param $document - needed in some cases, like tests
  */
-declare const _default: (anchors?: HTMLElement[], parent?: HTMLElement | null, $document?: Document) => IMouseParallaxMap | undefined;
+declare const _default: (anchors?: HTMLElement[], parent?: HTMLElement | null, $document?: Document) => IMouseParallax | undefined;
 export default _default;
 //# sourceMappingURL=mouseParallax.d.ts.map
