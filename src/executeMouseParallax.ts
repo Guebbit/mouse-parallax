@@ -6,8 +6,8 @@ import type { IMouseParallax } from './mouseParallax';
  *
  * @param container
  * @param items
- * @param {number} x - mouse/touch position X axis
- * @param {number} y - mouse/touch position Y axis
+ * @param {number} x - mouse/touch position X axis, move the element on using left (50% default generally)
+ * @param {number} y - mouse/touch position Y axis, move the element using top (50% default generally)
  */
 export default ({ container, items = [] } :IMouseParallax, x = 0, y = 0) => {
   // width and height of parent
@@ -20,7 +20,7 @@ export default ({ container, items = [] } :IMouseParallax, x = 0, y = 0) => {
   for (let i = 0; i < items.length; i++) {
     if(!items[i])
       continue;
-    const { element, intensityX, intensityY } = items[i]!;
+    const { element, intensityX, intensityY } = items[i];
     // apply movement
     element.style.left = (cx * intensityX + 50) + '%';
     element.style.top = (cy * intensityY + 50) + '%';

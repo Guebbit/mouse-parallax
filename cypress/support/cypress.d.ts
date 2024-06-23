@@ -3,6 +3,6 @@ declare namespace Cypress {
   interface Chainable<Subject = any> {
     addImages(containerSelector: string, parallaxImages?: Array<{ src: string, [key: string]: string | number }>): Chainable<HTMLElement[]>;
     centerMouse(): Chainable<Subject>;
-    checkElementPosition(elements: HTMLElement[], id?: string): Chainable<[string,string]>
+    checkParallaxPosition(elements: HTMLElement[], rules?: Array<[string, string, string]>)
   }
 }

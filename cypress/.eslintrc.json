@@ -3,6 +3,7 @@
     "plugin:cypress/recommended"
   ],
   "rules": {
-    "cypress/unsafe-to-chain-command": "off"
+    "cypress/unsafe-to-chain-command": "off",
+    "cypress/no-unnecessary-waiting": "off"
   }
 }

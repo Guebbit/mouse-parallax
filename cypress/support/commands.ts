@@ -78,11 +78,13 @@ Cypress.Commands.add('centerMouse', { prevSubject: 'element' }, (subject: JQuery
 
 /**
  * Set mouse position to center of chained element
+ * @param elements
+ * @param rules - [id, top, left]
  */
-Cypress.Commands.add('checkElementPosition', (elements: HTMLElement[], id = "") => {
-  const target = elements.find(el => el.id === id);
-  return [
-    target.style.top || '',
-    target.style.left || ''
-  ];
+Cypress.Commands.add('checkParallaxPosition', (elements: HTMLElement[], rules: Array<[string, string, string]> = []) => {
+  for(let i = 0, len = rules.length; len > i; i++){
+    const target = elements.find(el => el.id === rules[i][0]);
+    expect(target.style.left).to.equal(rules[i][1]); // X
+    expect(target.style.top).to.equal(rules[i][2]); // Y
+  }
 });

@@ -1,6 +1,6 @@
 {
   "name": "@guebbit/mouse-parallax",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "license": "AGPLv3.0",
   "sideEffects": false,
   "main": "dist/index.js",
