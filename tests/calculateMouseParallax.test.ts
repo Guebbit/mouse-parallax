@@ -1,4 +1,4 @@
-import { calculateMouseParallax } from '../src/index';
+import { calculateMouseParallax } from '../src/old';
 
 describe('calculateMouseParallax is a basically a math function', () => {
   test('Should return [0, 0] when all inputs are 0', () => {

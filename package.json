@@ -1,6 +1,6 @@
 {
   "name": "@guebbit/mouse-parallax",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "license": "AGPLv3.0",
   "sideEffects": false,
   "main": "dist/index.js",
@@ -61,7 +61,7 @@
     }
   },
   "dependencies": {
-    "@guebbit/js-toolkit-scroll": "file:../js-toolkit-scroll",
+    "@guebbit/js-toolkit": "^1.0.3",
     "lodash": "^4.17.21"
   }
 }

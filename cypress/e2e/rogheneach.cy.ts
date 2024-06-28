@@ -1,4 +1,4 @@
-import mouseParallax from '../../src/index';
+import mouseParallax from '../../src/old';
 
 
 // elements to dynamically add
@@ -60,3 +60,36 @@ describe('Animated wallpaper ("Free movement" only)', () => {
       );
   });
 });
+
+
+
+/*
+    mounted() {
+    // init
+    this.parallax = mouseParallax(this.$refs["parallax-items"]);
+    // Fade in background
+    setTimeout(() => {
+      this.$refs["hero-header"].classList.add("present-rogheneach");
+    }, 1000);
+    // Move in single direction, ignoring the mouse
+    setTimeout(() => {
+      executeMouseParallax(this.parallax, 40, 1200)
+    }, 2000);
+    // Activate true mouse parallax after speeding up all parallax-layers
+    setTimeout(() => {
+      // speed up all elements
+      for(let i = this.headerImages.length; i--; )
+        // this.headerImages[i].speed = this.headerImages[i].speed / 10;
+        this.$set(this.headerImages[i], 'speed', this.headerImages[i].speed / 20)
+      // update with the new values
+      // this.$forceUpdate();
+      // after changes
+      this.$nextTick(() => {
+        // re init is needed
+        this.parallax = mouseParallax(this.$refs["parallax-items"]);
+        // unlock
+        this.activatedParallax = true;
+      })
+    }, 8000);
+  }
+ */

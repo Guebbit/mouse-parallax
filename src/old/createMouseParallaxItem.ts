@@ -1,4 +1,4 @@
-import { getDatasetInstructions, type IMouseParallaxInstructions } from './';
+import { getDatasetInstructions, type IMouseParallaxInstructions } from './index';
 
 /**
  * Create mouse Parallax Item

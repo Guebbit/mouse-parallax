@@ -1,4 +1,4 @@
-import { createMouseParallaxItem, type IMouseParallaxInstructions } from '../src/index';
+import { createMouseParallaxItem, type IMouseParallaxInstructions } from '../src/old';
 
 describe('createMouseParallaxItem tests are just for safety, only cypress can test this piece correctly', () => {
   let element: HTMLElement;

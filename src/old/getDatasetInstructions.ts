@@ -1,4 +1,4 @@
-import type { IMouseParallaxInstructions } from './';
+import type { IMouseParallaxInstructions } from './index';
 
 /**
  * Get value from data-* attribute

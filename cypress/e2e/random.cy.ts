@@ -1,4 +1,4 @@
-import mouseParallax, { executeMouseParallax } from '../../src/index';
+import mouseParallax, { executeMouseParallax } from '../../src/old';
 
 describe('Every possible combination (remember to check the "Free movement" test)', () => {
 

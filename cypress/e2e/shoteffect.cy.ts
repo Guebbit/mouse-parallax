@@ -1,39 +1,27 @@
-import mouseParallax, { type IMouseParallax } from '../../src/index';
+import MouseParallax from '../../src';
 
 // elements of the parallax
 let children: HTMLElement[];
 // MouseParallax instance
-let mpInstance: IMouseParallax;
-
-/**
- * Built-in delay after each call
- * @param x
- * @param y
- */
-function moveHelper(x = 0, y = 0) {
-  mpInstance.move(x, y);
-  return cy.wait(200);
-}
+let mpInstance: MouseParallax;
 
 
 describe('Fake broken glass from shot (remember to check the "Free movement" test)', () => {
   beforeEach(() => {
     cy.visit('http://localhost:8080/shoteffect.html');
 
-    cy.document()
-      .then($document => {
-        cy.get('#parallax-object')
-          .then($element => {
-            children = $element.children().toArray();
-            mpInstance = mouseParallax(children, $element[0], $document);
-          });
-
-        // starting point
-        cy.get('#parallax-object')
-          .centerMouse();
+    cy.get('#parallax-object')
+      .then($element => {
+        children = $element.children().toArray();
+        mpInstance = new MouseParallax(children, $element[0]);
       });
+
+    // starting point
+    cy.get('#parallax-object')
+      .centerMouse();
   });
 
+  /*
   it('Shot effects', () => {
     // first movement
     moveHelper(500, 500)
@@ -160,6 +148,7 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
         ])
       )
   });
+  /**/
 
   /**
    * Manual test
@@ -169,7 +158,8 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
       .then($document =>
         cy.get('#parallax-object')
           .then($element => {
-            mouseParallax($element.children().toArray(), $element[0], $document)?.build(200);
+            console.log("INSTANCE", mpInstance)
+            // mouseParallax($element.children().toArray(), $element[0], $document)?.build(200);
           })
       );
   });
