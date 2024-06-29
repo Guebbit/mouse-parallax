@@ -155,12 +155,13 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
    */
   it('Free movement', () => {
     cy.document()
-      .then($document =>
-        cy.get('#parallax-object')
-          .then($element => {
-            console.log("INSTANCE", mpInstance)
-            // mouseParallax($element.children().toArray(), $element[0], $document)?.build(200);
-          })
-      );
+      .then($document => {
+        mpInstance.throttle = 1000;
+        console.log("INSTANCE", mpInstance)
+        // mpInstance.start();
+
+        // $document.addEventListener("mousemove", mpInstance.listenerMouse);
+        // $document.addEventListener("touchmove", mpInstance.listenerTouch);
+      });
   });
 })
