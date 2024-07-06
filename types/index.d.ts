@@ -5,100 +5,175 @@
  */
 export interface IMouseParallaxInstructions {
     element: HTMLElement;
-    intensityX: number;
-    intensityY: number;
-    speed: number;
+    intensityX?: number;
+    intensityY?: number;
+    speed?: number;
+    position?: number;
 }
 /**
- *
+ * All public methods are chainable
  */
 export default class MouseParallax {
+    /**
+     * 0 = stop, 1 = start
+     * @private
+     */
     private _status;
+    /**
+     * container of parallax
+     * @private
+     */
     private _container;
+    /**
+     * Rules + HTML elements that will be moved for the parallax effect
+     * @private
+     */
     private _items;
-    private _speedModifier;
-    private _intensityModifier;
-    throttle: number;
-    constructor(anchors: HTMLElement[], container?: HTMLElement);
+    /**
+     * defaults (for non existent instructions)
+     * @private
+     */
+    private _defaults;
+    /**
+     * Global modifiers
+     * ALL parameters are treated like percentages
+     * (thats why "speed" is 1, as 100%, instead of milliseconds)
+     */
+    private _globals;
+    /**
+     * required css for parallax items to work
+     * @private
+     */
+    private _requiredCss;
+    /**
+     * throttle speed
+     * @private
+     */
+    private _throttle;
+    /**
+     * function pointer, to correctly handle throttle, events and listeners
+     */
+    private _functionPointer;
+    /**
+     * prefix for dataset rules on html elements
+     */
+    datasetPrefix: string;
+    /**
+     * Move function can be customized, otherwise its just "execute" the movement
+     * @param x
+     * @param y
+     */
+    move: (x: number, y: number) => this;
+    constructor(anchors?: HTMLElement[], container?: HTMLElement);
     /**
      * GETTER items
-     * (no SETTER)
+     * No SETTER, but parameters can be accessed and changed
+     * WARNING: Always use reload() after changes
      */
     get items(): IMouseParallaxInstructions[];
     /**
-     * Chainable
      * Replace current items with new items and their rules
+     *
      * @param items
+     * @param instructions
      */
-    setItems(items: HTMLElement[]): this;
+    setItems(items: HTMLElement[], instructions?: Omit<IMouseParallaxInstructions, "element">[]): MouseParallax;
     /**
-     * Chainable
+     * Add an array of items
+     * WARNING: if "instructions" are set, they must be the same number as "items" array
+     *
+     * @param items
+     * @param instructions
+     */
+    addItems(items?: HTMLElement[], instructions?: Omit<IMouseParallaxInstructions, "element">[]): MouseParallax;
+    /**
      * Add a new item and it's rules at the end of the array
-     * @param items
+     * @param item
+     * @param instructions
      */
-    addItems(items?: HTMLElement[]): this;
+    addItem(item: HTMLElement, instructions?: Omit<IMouseParallaxInstructions, "element">): MouseParallax;
     /**
-     * Change global intensity modifier (that changes all items speed)
-     *
-     * @param modifier - 1 means "no changes"
+     * Edit item and apply new rules
+     * @param index
+     * @param instructions
      */
-    changeIntensity(modifier?: number): this;
+    editItem(index: number, instructions: Partial<Omit<IMouseParallaxInstructions, "element">>): MouseParallax;
     /**
-     * Chainable
-     * Change global speed modifier (that changes all items speed)
-     *
-     * @param modifier - 1 means "no changes"
+     * GETTER globals
+     * WARNING: Always use reload() after changes
      */
-    changeSpeed(modifier?: number): this;
+    get globals(): Omit<IMouseParallaxInstructions, "element">;
     /**
-     * Chainable
+     * SETTER globals
+     */
+    set globals(instructions: Omit<IMouseParallaxInstructions, "element">);
+    /**
      * Soft stop parallax
      */
-    stop(): this;
+    stop(): MouseParallax;
     /**
-     * Chainable
      * Restart parallax (if it was stopped)
      */
-    start(): this;
+    start(): MouseParallax;
     /**
      *
      * @param {number} x - mouse/touch position X axis, move the element on using left (50% default generally)
      * @param {number} y - mouse/touch position Y axis, move the element using top (50% default generally)
      */
-    private execute;
+    execute(x?: number, y?: number): MouseParallax;
     /**
-     *
-     * @param clientX
-     * @param clientY
+     * GETTER throttle
      */
-    move(clientX?: number, clientY?: number): this;
+    get throttle(): number;
     /**
-     * TODO STATIC? (execute too?)
-     * Sometimes it is required that they can be accessed directly
+     * SETTER throttle
+     * When it's changed,
      */
-    listenerMouse: import("lodash").DebouncedFuncLeading<({ clientX, clientY }: MouseEvent) => void>;
+    set throttle(value: number);
     /**
-     * TODO STATIC? (execute too?)
-     * Sometimes it is required that they can be accessed directly
+     * Translate events to X and Y coordinates only
      */
-    listenerTouch: import("lodash").DebouncedFuncLeading<({ changedTouches }: TouchEvent) => void>;
+    private _eventHandler;
     /**
      * Add events to dom
+     * @param $document - needed in some cases, like cypress tests
      */
-    createListeners(): this;
+    createListeners($document?: Document): MouseParallax;
     /**
-     * Cleanup
+     * Cleanup of unused eventListeners
+     * @param $document - needed in some cases, like cypress tests
      */
-    destroyListeners(): this;
+    destroyListeners($document?: Document): MouseParallax;
+    /**
+     * Reload eventListeners
+     * @param $document - needed in some cases, like cypress tests
+     */
+    reloadListeners($document?: Document): MouseParallax;
+    /**
+     * Apply the custom rules
+     *
+     * @param item
+     */
+    applyRules(item: IMouseParallaxInstructions): this;
+    /**
+     * Build html parallax
+     * @private
+     */
+    createParallax(): void;
     /**
      * All around function.
      * Prepare css and create listeners to start parallax
      */
-    build(): this;
+    build(): MouseParallax;
+    /**
+     * Reload if changes where made (to items or particular rules)
+     */
+    reload(): MouseParallax;
     /**
      * Remove listeners and hard stop parallax
+     * No need to remove custom CSS inserted with createParallax
      */
-    destroy(): void;
+    destroy(): MouseParallax;
     /**
      * Calculate the relative position of a point (x,y) within a container.
      * Needed to calculate the parallax effect based on the movement of the mouse (or touch or custom).
@@ -112,13 +187,11 @@ export default class MouseParallax {
      */
     private _calculateMouseParallax;
     /**
-     * TODO gestire element inesistenti?
      * Get item's instructions from dataset
      *
      * @param element
      * @private
      */
     private _itemBuilder;
-    private _elementTransform;
 }
 //# sourceMappingURL=index.d.ts.map

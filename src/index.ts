@@ -152,8 +152,16 @@ export default class MouseParallax {
    * @param instructions
    */
   public addItem(item: HTMLElement, instructions?: Omit<IMouseParallaxInstructions, "element">): MouseParallax {
+    // avoid null
     if(!item)
       return this;
+    // avoid duplicates
+    if(this._checkElementDuplicate(item)){
+      const error = new Error("MouseParallax editItem - HTML element already present");
+      console.error(error);
+      return this;
+    }
+    // insert element and it's custom instructions
     this._items.push({
       ...this._itemBuilder(item),
       ...instructions || {},
@@ -389,6 +397,23 @@ export default class MouseParallax {
       w === 0 ? 0 : ((x - w / 2) / w),
       h === 0 ? 0 : ((y - h / 2) / h)
     ];
+  }
+
+  /**
+   * Check if HTMLElement is already present in the Parallax.
+   * Duplicates need to be avoided because they would overwrite themselves
+   * and be generally chaotic
+   *
+   * @param item
+   * @private
+   */
+  private _checkElementDuplicate(check?: HTMLElement){
+    return  this._items.some(item => {
+      console.log("ITEM.ELEMENT", item.element);
+      console.log("CHECKKKKK", check)
+      console.log("RESULT", item.element === check)
+      return item.element === check;
+    })
   }
 
   /**
