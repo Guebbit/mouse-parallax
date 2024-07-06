@@ -1,4 +1,4 @@
-import mouseParallax from '../../src/old';
+import MouseParallax from '../../src';
 
 
 // elements to dynamically add
@@ -9,24 +9,24 @@ const parallaxImages = [
   },
   {
     src: "images/rogh-parallax-1.png",
-    intensity: 5,
+    intensity: 0.5,
     speed: 20000
   },
   {
     src: "images/rogh-parallax-2.png",
-    intensity: 10,
+    intensity: 1,
     speed: 10000
   },
   {
     src: "images/rogh-parallax-3.png",
-    intensityx: 10,
-    intensityy: 5,
+    intensityx: 1,
+    intensityy: 0.5,
     speed: 20000
   },
   {
     src: "images/rogh-parallax-4.png",
-    intensityx: 10,
-    intensityy: 5,
+    intensityx: 1,
+    intensityy: 0.5,
     speed: 20000
   }
 ];
@@ -41,23 +41,18 @@ describe('Animated wallpaper ("Free movement" only)', () => {
 
   /**
    * Manual test
+   * WARNING: throttle change trigger reloadListeners without $document so the event isn't properly removed
+   * So, only in this test, changing speed from fast to slow doesn't "work"
    */
   it('Free movement', () => {
-    cy.document()
-      .then($document => {
-        cy.addImages('#parallax-object', parallaxImages)
-          .then((elements = []) => {
-            const parallaxObject = mouseParallax(elements, null, $document);
-            if(!parallaxObject)
-              return;
-            parallaxObject.build();
-          });
-        cy.get('#parallax-object')
-          .then($element => {
-            mouseParallax($element.children().toArray(), $element[0], $document)?.build(200);
-          })
-        }
-      );
+    cy.addImages('#parallax-object', parallaxImages)
+      .then(() => cy.get('#parallax-object'))
+      .then($element => {
+        const mpInstance = new MouseParallax($element.children().toArray());
+        mpInstance.build();
+        cy.document()
+          .then($document => mpInstance.createListeners($document));
+      });
   });
 });
 

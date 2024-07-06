@@ -18,7 +18,7 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
   });
 
   test('Should return values from dataset when they are manually set', () => {
-    element.dataset.parallaxMovementIntensity = '150';
+    element.dataset.parallaxRuleIntensity = '150';
 
     let result: IMouseParallaxInstructions = createMouseParallaxItem(element);
 
@@ -27,7 +27,7 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
 
     //
 
-    element.dataset.parallaxMovementIntensityX = '200';
+    element.dataset.parallaxRuleIntensityX = '200';
 
     result = createMouseParallaxItem(element);
 
@@ -36,7 +36,7 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
 
     //
 
-    element.dataset.parallaxMovementIntensityY = '250';
+    element.dataset.parallaxRuleIntensityY = '250';
 
     result = createMouseParallaxItem(element);
 
@@ -45,7 +45,7 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
   });
 
   test('Should change the style of the element based on the parallax movement', () => {
-    element.dataset.parallaxMovementSpeed = '500';
+    element.dataset.parallaxRuleSpeed = '500';
 
     const result: IMouseParallaxInstructions = createMouseParallaxItem(element);
 
@@ -56,13 +56,13 @@ describe('createMouseParallaxItem tests are just for safety, only cypress can te
   });
 
   test('Should change the style of the element based on the parallax movement (bis)', () => {
-    element.dataset.parallaxMovementIntensity = '150';
-    element.dataset.parallaxMovementIntensityX = '200';
-    element.dataset.parallaxMovementSpeed = '300';
+    element.dataset.parallaxRuleIntensity = '150';
+    element.dataset.parallaxRuleIntensityX = '200';
+    element.dataset.parallaxRuleSpeed = '300';
 
     const result: IMouseParallaxInstructions = createMouseParallaxItem(element);
 
-    expect(result.intensityX).toBe(200); // parallaxMovementIntensityX overrides parallaxMovementIntensity
+    expect(result.intensityX).toBe(200); // parallaxRuleIntensityX overrides parallaxRuleIntensity
     expect(result.intensityY).toBe(150);
     expect(result.speed).toBe(300);
     expect(element.style.transition).toContain('top 300ms');

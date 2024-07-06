@@ -4,6 +4,7 @@
  * 0 = stopped, 100 = follow mouse (default), 200 = double
  */
 export interface IMouseParallaxInstructions {
+    element: HTMLElement;
     intensityX: number;
     intensityY: number;
     speed: number;
@@ -12,41 +13,30 @@ export interface IMouseParallaxInstructions {
  *
  */
 export default class MouseParallax {
-    private _id;
     private _status;
     private _container;
     private _items;
-    private _instructions;
     private _speedModifier;
     private _intensityModifier;
     throttle: number;
     constructor(anchors: HTMLElement[], container?: HTMLElement);
     /**
      * GETTER items
+     * (no SETTER)
      */
-    get items(): HTMLElement[];
+    get items(): IMouseParallaxInstructions[];
     /**
-     * SETTER items
+     * Chainable
+     * Replace current items with new items and their rules
      * @param items
      */
-    set items(items: HTMLElement[]);
+    setItems(items: HTMLElement[]): this;
     /**
-     *
+     * Chainable
+     * Add a new item and it's rules at the end of the array
      * @param items
      */
-    addItem(items?: HTMLElement[]): void;
-    /**
-     * Check if all items are valid HTMLElements
-     * @param items
-     */
-    checkItemsValidity(items?: HTMLElement[]): boolean;
-    /**
-     * Get item's instructions from dataset
-     *
-     * @param element
-     * @private
-     */
-    private _getInstructionsFromDataset;
+    addItems(items?: HTMLElement[]): this;
     /**
      * Change global intensity modifier (that changes all items speed)
      *
@@ -54,31 +44,22 @@ export default class MouseParallax {
      */
     changeIntensity(modifier?: number): this;
     /**
+     * Chainable
      * Change global speed modifier (that changes all items speed)
      *
      * @param modifier - 1 means "no changes"
      */
     changeSpeed(modifier?: number): this;
     /**
+     * Chainable
      * Soft stop parallax
      */
     stop(): this;
     /**
-     * Re start parallax (if it was stopped)
+     * Chainable
+     * Restart parallax (if it was stopped)
      */
     start(): this;
-    /**
-     * Calculate the relative position of a point (x,y) within a container.
-     * Needed to calculate the parallax effect based on the movement of the mouse (or touch or custom).
-     *
-     * @param {number} x - axis X (mouse, touch, custom)
-     * @param {number} y - axis Y (mouse, touch, custom)
-     * @param {number} w - width of parent container
-     * @param {number} h - height of parent container
-     *
-     * @return {number, number} - new X and Y positions calculated on the parent container
-     */
-    calculateMouseParallax(x?: number, y?: number, w?: number, h?: number): [number, number];
     /**
      *
      * @param {number} x - mouse/touch position X axis, move the element on using left (50% default generally)
@@ -92,26 +73,21 @@ export default class MouseParallax {
      */
     move(clientX?: number, clientY?: number): this;
     /**
-     * Sometimes it could be needed to add the necessary
-     * positioning rules before applying movement
+     * TODO STATIC? (execute too?)
+     * Sometimes it is required that they can be accessed directly
      */
-    initCss(): void;
+    listenerMouse: import("lodash").DebouncedFuncLeading<({ clientX, clientY }: MouseEvent) => void>;
     /**
-     *
-     * @private
+     * TODO STATIC? (execute too?)
+     * Sometimes it is required that they can be accessed directly
      */
-    private _listenerMouse;
+    listenerTouch: import("lodash").DebouncedFuncLeading<({ changedTouches }: TouchEvent) => void>;
     /**
-     *
-     * @private
-     */
-    private _listenerTouch;
-    /**
-     * Add
+     * Add events to dom
      */
     createListeners(): this;
     /**
-     *
+     * Cleanup
      */
     destroyListeners(): this;
     /**
@@ -123,5 +99,26 @@ export default class MouseParallax {
      * Remove listeners and hard stop parallax
      */
     destroy(): void;
+    /**
+     * Calculate the relative position of a point (x,y) within a container.
+     * Needed to calculate the parallax effect based on the movement of the mouse (or touch or custom).
+     *
+     * @param {number} x - axis X (mouse, touch, custom)
+     * @param {number} y - axis Y (mouse, touch, custom)
+     * @param {number} w - width of parent container
+     * @param {number} h - height of parent container
+     *
+     * @return {number, number} - new X and Y positions calculated on the parent container
+     */
+    private _calculateMouseParallax;
+    /**
+     * TODO gestire element inesistenti?
+     * Get item's instructions from dataset
+     *
+     * @param element
+     * @private
+     */
+    private _itemBuilder;
+    private _elementTransform;
 }
 //# sourceMappingURL=index.d.ts.map

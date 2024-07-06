@@ -51,7 +51,7 @@ Cypress.Commands.add('addImages',(containerSelector: string, parallaxImages: Arr
       img.src = image.src;
       Object.keys(image).forEach(key => {
         if (key !== 'src' && key !== 'thumbnail') {
-          img.setAttribute(`data-parallax-movement-${key}`, image[key] as string);
+          img.setAttribute(`data-parallax-rule-${key}`, image[key] as string);
         }
       });
       $container[0].appendChild(img);

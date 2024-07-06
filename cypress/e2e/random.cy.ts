@@ -1,4 +1,4 @@
-import mouseParallax, { executeMouseParallax } from '../../src/old';
+import MouseParallax from '../../src';
 
 describe('Every possible combination (remember to check the "Free movement" test)', () => {
 
@@ -9,51 +9,24 @@ describe('Every possible combination (remember to check the "Free movement" test
       .centerMouse();
   });
 
-  it('Custom use (old)', () => {
-    cy.document()
-      .then($document => {
-        cy.get('#parallax-object > *')
-          .then($elements => {
-            const parallaxObject = mouseParallax($elements.toArray(), null, $document);
-            // single movement, like if the mouse were on 800x and 400y coordinates
-            if(!parallaxObject)
-              return;
-            executeMouseParallax(parallaxObject, 800, 400)
-            //after 1 second, another movement
-            setTimeout(() => executeMouseParallax(parallaxObject, 1200, 800), 2000)
-            // write the instructions for better view
-            cy.get('#instructions').then($el => $el.html(JSON.stringify(parallaxObject, null, 2)))
-          });
-      });
-  });
-
-  it('Random Objects (old)', () => {
-    cy.document()
-      .then($document => {
-        cy.get('#parallax-object > *')
-          .then($elements => {
-            const parallaxObject = mouseParallax($elements.toArray(), null, $document);
-            if(!parallaxObject)
-              return;
-            parallaxObject.build();
-            const { items = [] } = parallaxObject;
-            // stop "low" text to move on Y axis
-            items[2].intensityY = 0;
-          });
-      });
-  });
-
   /**
    * Manual test
+   * WARNING: throttle change trigger reloadListeners without $document so the event isn't properly removed
+   * So, only in this test, changing speed from fast to slow doesn't "work"
    */
   it('Free movement', () => {
-    cy.document()
-      .then($document =>
-        cy.get('#parallax-object')
-          .then($element => {
-            mouseParallax($element.children().toArray(), $element[0], $document)
-              ?.build(200);
-          })
-      );
+    cy.get('#parallax-object')
+      .then($element => {
+        const mpInstance = new MouseParallax($element.children().toArray());
+        cy.get("#custom-rule-element")
+          .then($element =>
+            mpInstance.addItem($element[0], {
+              speed: 1000
+            })
+          )
+        mpInstance.build();
+        cy.document()
+          .then($document => mpInstance.createListeners($document));
+      });
   });
 })

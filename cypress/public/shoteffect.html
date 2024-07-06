@@ -35,13 +35,6 @@
       border-radius: 50%;
       z-index: 5;
     }
-    #unused-item{
-      background: red;
-      width: 25px;
-      height: 25px;
-      border-radius: 50%;
-      z-index: 6;
-    }
   </style>
 </head>
 <body>
@@ -50,34 +43,31 @@
       <img
         id="depth-1"
         src="images/depth-1.png"
-        data-parallax-movement-intensity="-10"
-        data-parallax-movement-speed="200"
+        data-parallax-rule-intensity="-0.1"
+        data-parallax-rule-speed="200"
       >
       <img
         id="depth-2"
         src="images/depth-2.png"
-        data-parallax-movement-intensity="-50"
-        data-parallax-movement-speed="200"
+        data-parallax-rule-intensity="-0.5"
+        data-parallax-rule-speed="200"
       >
       <img
         id="depth-3"
         src="images/depth-3.png"
-        data-parallax-movement-intensity="-100"
-        data-parallax-movement-speed="200"
+        data-parallax-rule-intensity="-1"
+        data-parallax-rule-speed="200"
       >
       <h1
         id="follow-text"
-        data-parallax-movement-speed="0"
+        data-parallax-rule-speed="0"
       >
         FOLLOW <small><small>(no transition)</small></small>
       </h1>
       <div
         id="center-point"
-        data-parallax-movement-intensity="0"
-        data-parallax-movement-speed="200"
-      ></div>
-      <div
-        id="unused-item"
+        data-parallax-rule-intensity="0"
+        data-parallax-rule-speed="200"
       ></div>
     </div>
   </div>

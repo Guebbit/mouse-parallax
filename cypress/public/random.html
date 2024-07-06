@@ -65,69 +65,75 @@
       border-radius: 50%;
       z-index: 5;
     }
+    #custom-rule-element{
+      background: purple;
+      width: 50px;
+      height: 50px;
+      z-index: 6;
+    }
   </style>
 </head>
 <body>
+  <div id="custom-rule-element"></div>
   <div id="object-wrapper">
     <div id="parallax-object">
       <img
         src="images/sally.jpg"
         style="max-height: 500px"
-        data-parallax-movement-intensity="20"
-        data-parallax-movement-speed="1000"
+        data-parallax-rule-intensity="0.2"
+        data-parallax-rule-speed="1000"
       >
 
       <img
         src="images/cosace.jpg"
         style="max-height: 200px"
-        data-parallax-movement-intensity="200"
-        data-parallax-movement-speed="500"
+        data-parallax-rule-intensity="2"
+        data-parallax-rule-speed="500"
       >
 
       <div
         id="async-backward-text-background"
-        data-parallax-movement-intensity=-80"
-        data-parallax-movement-speed="100"
+        data-parallax-rule-intensity=-0.8"
+        data-parallax-rule-speed="100"
       ></div>
-
-      <h1
-        id="backward-text"
-        data-parallax-movement-intensity="-80"
-        data-parallax-movement-speed="300"
-      >BACKWARD</h1>
 
       <div
         id="random-circle"
-        data-parallax-movement-intensity="100"
-        data-parallax-movement-speed="1000"
+        data-parallax-rule-intensity="1"
+        data-parallax-rule-speed="1000"
       ></div>
 
       <h1
         id="vertical-text"
-        data-parallax-movement-intensity-x="0"
+        data-parallax-rule-intensity-x="0"
       >VERTICAL</h1>
 
       <h1
         id="horizontal-text"
-        data-parallax-movement-intensity-y="0"
+        data-parallax-rule-intensity-y="0"
       >HORIZONTAL</h1>
 
       <h1
+        id="backward-text"
+        data-parallax-rule-intensity="-0.8"
+        data-parallax-rule-speed="300"
+      >BACKWARD</h1>
+
+      <h1
         id="low-intensity-text"
-        data-parallax-movement-intensity="50"
+        data-parallax-rule-intensity="0.5"
       >LOW</h1>
 
       <h1
-        data-parallax-movement-intensity-x="a"
-        data-parallax-movement-intensity-y="a"
+        data-parallax-rule-intensity-x="a"
+        data-parallax-rule-intensity-y="a"
       >FOLLOW</h1>
 
       <div
         id="center"
-        data-parallax-movement-intensity=0"
+        data-parallax-rule-intensity="0"
       ></div>
     </div>
   </div>
-  <pre id="instructions"></pre>
 </body>
 </html>
