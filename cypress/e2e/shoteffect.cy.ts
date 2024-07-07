@@ -33,7 +33,6 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
       .centerMouse();
   });
 
-
   it('Shot effects', () => {
     // first movement
     moveHelper(500, 500)
@@ -57,7 +56,7 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
           [
             "follow-text",
             "50%",
-            "71.25%",
+            "70%",  // because it's capped with limit = 20
           ],
           [
             "center-point",
@@ -88,7 +87,7 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
           [
             "follow-text",
             "50%",
-            "133.75%",
+            "70%",  // because it's capped with limit = 20
           ],
           [
             "center-point",
@@ -118,8 +117,8 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
           ],
           [
             "follow-text",
-            "112.5%",
-            "71.25%",
+            "70%", // capped
+            "70%", // capped
           ],
           [
             "center-point",
@@ -149,8 +148,8 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
           ],
           [
             "follow-text",
-            "-75%",
-            "-53.75%",
+            "30%",
+            "30%",
           ],
           [
             "center-point",
@@ -184,8 +183,8 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
           ],
           [
             "follow-text",
-            "-75%",
-            "-53.75%",
+            "30%",
+            "30%",
           ],
           [
             "center-point",
@@ -223,7 +222,7 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
           [
             "follow-text",
             "50%",
-            "71.25%",
+            "70%", // capped
           ],
           [
             "center-point",
@@ -289,4 +288,4 @@ describe('Fake broken glass from shot (remember to check the "Free movement" tes
         }, 2000)
       });
   });
-})
+});

@@ -13,7 +13,7 @@ describe('Every possible combination (remember to check the "Free movement" test
     cy.get('#parallax-object')
       .then($element => {
         // MouseParallax instance
-        const mpInstance = new MouseParallax($element.children().toArray(), $element[0]);
+        const mpInstance = new MouseParallax($element.children().toArray());
         // it will not work since cypress doesn't use document, need custom cypress' $document implementation
         mpInstance.build();
         // custom move function (no arrow function, context is necessary)

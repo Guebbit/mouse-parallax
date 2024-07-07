@@ -3,9 +3,10 @@ import MouseParallax from '../../src';
 
 // elements to dynamically add
 const parallaxImages = [
+  // background has to stay still (better to NOT include this image into the parallax)
   {
     src: "images/rogh-parallax-0.png",
-    intensity: 0
+    intensity: 0,
   },
   {
     src: "images/rogh-parallax-1.png",
@@ -48,7 +49,16 @@ describe('Animated wallpaper ("Free movement" only)', () => {
     cy.addImages('#parallax-object', parallaxImages)
       .then(() => cy.get('#parallax-object'))
       .then($element => {
-        const mpInstance = new MouseParallax($element.children().toArray());
+        const elements = $element.children().toArray();
+        // NOT include the background in the parallax
+        elements.shift();
+        // This class adds +10% size to hide the borders during movement limited to 5% (it has to be max half)
+        $element[0].classList.add('wallpaper-mode');
+        // limit of 5% movement (so it doesn't show since we enlarged the items by 10%)
+        const mpInstance = new MouseParallax(elements,{
+          limitX: 5,
+          limitY: 5,
+        });
         mpInstance.build();
         cy.document()
           .then($document => mpInstance.createListeners($document));
