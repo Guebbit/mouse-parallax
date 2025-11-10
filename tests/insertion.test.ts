@@ -14,7 +14,7 @@ describe('Neutral insertion', () => {
     // Insertion
     mpInstance.addItem(element);
     // add to MouseParallax
-    const result = mpInstance.items?.[0];
+    const result = mpInstance.items[0];
     // check standard values
     expect(result.element).toBe(element);
     expect(result.intensityX).toBe(1);
@@ -51,17 +51,17 @@ describe('Insertion with rules', () => {
 
   test('Should return values from dataset when they are present', () => {
     mpInstance.addItems([element1, element2, element3]);
-    let result = mpInstance.items?.[0];
+    let result = mpInstance.items[0];
 
     expect(result.intensityX).toBe(1.5);
     expect(result.intensityY).toBe(1.5);
 
-    result = mpInstance.items?.[1];
+    result = mpInstance.items[1];
 
     expect(result.intensityX).toBe(2);
     expect(result.intensityY).toBe(3);
 
-    result = mpInstance.items?.[2];
+    result = mpInstance.items[2];
 
     expect(result.intensityX).toBe(1);
     expect(result.intensityY).toBe(2.5);
@@ -87,17 +87,17 @@ describe('Insertion with rules', () => {
       }
     ]);
 
-    let result = mpInstance.items?.[0];
+    let result = mpInstance.items[0];
 
     expect(result.intensityX).toBe(2);
     expect(result.intensityY).toBe(1.5);
 
-    result = mpInstance.items?.[1];
+    result = mpInstance.items[1];
 
     expect(result.intensityX).toBe(2);
     expect(result.intensityY).toBe(3);
 
-    result = mpInstance.items?.[2];
+    result = mpInstance.items[2];
 
     expect(result.intensityX).toBe(10);
     expect(result.intensityY).toBe(0);

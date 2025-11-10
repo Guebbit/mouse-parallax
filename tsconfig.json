@@ -26,9 +26,12 @@
     ]
   },
   "include": [
-    "./src"
+    "./src/**/*",
+    "./tests/**/*",
+    "./types/**/*"
   ],
   "exclude": [
-    "./node_modules"
+    "./node_modules",
+    "./dist"
   ]
 }

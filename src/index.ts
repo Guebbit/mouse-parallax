@@ -11,18 +11,18 @@ import { throttle } from 'lodash';
  */
 export interface IMouseParallaxItem {
   element: HTMLElement;   // html element
-  intensityX?: number     // % of X axis movement intensity (in 0-1 percentages)
-  intensityY?: number     // % of Y axis movement intensity (in 0-1 percentages)
-  limitX?: number         // % limit for X axis (in %), -1 = no limit
-  limitY?: number         // % limit for Y axis (in %), -1 = no limit
-  speed?: number          // transition speed (in milliseconds)
-  position?: number       // z-index position
+  intensityX?: number;     // % of X axis movement intensity (in 0-1 percentages)
+  intensityY?: number;     // % of Y axis movement intensity (in 0-1 percentages)
+  limitX?: number;         // % limit for X axis (in %), -1 = no limit
+  limitY?: number;         // % limit for Y axis (in %), -1 = no limit
+  speed?: number;          // transition speed (in milliseconds)
+  position?: number;       // z-index position
 }
 
 /**
  * Instructions only here
  */
-export type IMouseParallaxInstructions = Omit<IMouseParallaxItem, "element">;
+export type IMouseParallaxInstructions = Omit<IMouseParallaxItem, 'element'>;
 
 /**
  * All public methods are chainable
@@ -51,12 +51,12 @@ export default class MouseParallax {
    * defaults (for non existent instructions)
    * @private
    */
-  private _defaults: Omit<Required<IMouseParallaxInstructions>, "position"> = {
+  private _defaults: Omit<Required<IMouseParallaxInstructions>, 'position'> = {
     intensityX: 1,
     intensityY: 1,
     limitX: -1,
     limitY: -1,
-    speed: 0,
+    speed: 0
   };
 
   /**
@@ -86,34 +86,34 @@ export default class MouseParallax {
   /**
    * function pointer, to correctly handle throttle, events and listeners
    */
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  private _functionPointer: any = () => {};
+    // eslint-disable-next-line @typescript-eslint/no-empty-function,@typescript-eslint/no-unused-vars,unicorn/empty-brace-spaces
+  private _functionPointer = ($event: MouseEvent | TouchEvent) => {
+  };
 
   /**
    * prefix for dataset rules on html elements
    */
-  public datasetPrefix = "parallaxRule";
+  public datasetPrefix = 'parallaxRule';
 
   /**
    * Move function can be customized, otherwise its just "execute" the movement
    * @param x
    * @param y
    */
-  public move = (x: number, y: number) => { this.execute(x, y); return this; };
+  public move = (x: number, y: number) => {
+    this.execute(x, y);
+    return this;
+  };
 
   constructor(anchors: HTMLElement[] = [], instructions?: IMouseParallaxInstructions, container?: HTMLElement) {
     // No elements, they will be defined later
-    if(anchors.length <= 0)
+    if (anchors.length <= 0)
       return;
     // set globals (if any)
-    if(instructions)
+    if (instructions)
       this._globals = instructions;
     // default parent = element parent
-    if (!container && anchors[0] && anchors[0].parentElement)
-      this._container = anchors[0].parentElement;
-    else
-      // chosen container
-      this._container = container;
+    this._container = !container && anchors[0]?.parentElement ? anchors[0].parentElement : container;
     // set the initial items
     this.setItems(anchors);
   }
@@ -123,7 +123,7 @@ export default class MouseParallax {
    * No SETTER, but parameters can be accessed and changed
    * WARNING: Always use reload() after changes
    */
-  public get items(){
+  public get items() {
     return this._items;
   }
 
@@ -133,7 +133,7 @@ export default class MouseParallax {
    * @param items
    * @param instructions
    */
-  public setItems(items: HTMLElement[], instructions: IMouseParallaxInstructions[] = []): MouseParallax {
+  public setItems(items: HTMLElement[], instructions: IMouseParallaxInstructions[] = []): this {
     this._items = [];
     this.addItems(items, instructions);
     return this;
@@ -146,14 +146,15 @@ export default class MouseParallax {
    * @param items
    * @param instructions
    */
-  public addItems(items: HTMLElement[] = [], instructions: IMouseParallaxInstructions[] = []): MouseParallax {
-    if(instructions && instructions.length > 0 && instructions.length !== items.length){
-      const error = new Error("MouseParallax addItems - items and instructions array length doesn't match");
+  public addItems(items: HTMLElement[] = [], instructions: IMouseParallaxInstructions[] = []): this {
+    if (instructions.length > 0 && instructions.length !== items.length) {
+      const error = new Error('MouseParallax addItems - items and instructions array length doesn\'t match');
+      // eslint-disable-next-line no-console
       console.error(error);
       return this;
     }
     for (let i = 0, len = items.length; i < len; i++)
-      this.addItem(items[i], instructions[i])
+      this.addItem(items[i], instructions[i]);
     return this;
   }
 
@@ -162,23 +163,24 @@ export default class MouseParallax {
    * @param item
    * @param instructions
    */
-  public addItem(item: HTMLElement, instructions?: IMouseParallaxInstructions): MouseParallax {
+  public addItem(item: HTMLElement | null, instructions?: IMouseParallaxInstructions): this {
     // avoid null
-    if(!item)
+    if (!item)
       return this;
     // avoid duplicates
-    if(this._checkElementDuplicate(item)){
-      const error = new Error("MouseParallax editItem - HTML element already present");
+    if (this._checkElementDuplicate(item)) {
+      const error = new Error('MouseParallax editItem - HTML element already present');
+      // eslint-disable-next-line no-console
       console.error(error);
       return this;
     }
     // insert element and it's custom instructions
     this._items.push({
       ...this._itemBuilder(item),
-      ...instructions || {},
+      ...instructions
     });
     // apply rules to last item inserted
-    this.applyParallax(this._items[this._items.length - 1]);
+    this.applyParallax(this._items.at(-1));
     return this;
   }
 
@@ -187,16 +189,17 @@ export default class MouseParallax {
    * @param index
    * @param instructions
    */
-  public editItem(index: number, instructions: Partial<IMouseParallaxInstructions>): MouseParallax {
-    if (index < 0 || index >= this._items.length || instructions.hasOwnProperty("element")) {
-      const error = new Error("MouseParallax editItem - invalid item or rules");
+  public editItem(index: number, instructions: Partial<IMouseParallaxInstructions>): this {
+    if (index < 0 || index >= this._items.length || Object.prototype.hasOwnProperty.call(instructions, 'element')) {
+      const error = new Error('MouseParallax editItem - invalid item or rules');
+      // eslint-disable-next-line no-console
       console.error(error);
       return this;
     }
     // edit item instructions
     this._items[index] = {
       ...this._items[index],
-      ...instructions,
+      ...instructions
     };
     // apply rules to changed item
     this.applyParallax(this._items[index]);
@@ -211,22 +214,22 @@ export default class MouseParallax {
    * @param check
    * @private
    */
-  private _checkElementDuplicate(check?: HTMLElement){
-    return  this._items.some(item => item.element === check)
+  private _checkElementDuplicate(check?: HTMLElement) {
+    return this._items.some(item => item.element === check);
   }
 
   /**
    * GETTER globals
    * WARNING: Always use reload() after changes
    */
-  public get globals(){
+  public get globals() {
     return this._globals;
   }
 
   /**
    * SETTER globals
    */
-  public set globals(instructions){
+  public set globals(instructions) {
     this._globals = instructions;
     this.reload();
   }
@@ -234,7 +237,7 @@ export default class MouseParallax {
   /**
    * Soft stop parallax
    */
-  public stop(): MouseParallax {
+  public stop(): this {
     this._status = 0;
     return this;
   }
@@ -242,7 +245,7 @@ export default class MouseParallax {
   /**
    * Restart parallax (if it was stopped)
    */
-  public start(): MouseParallax {
+  public start(): this {
     this._status = 1;
     return this;
   }
@@ -252,16 +255,16 @@ export default class MouseParallax {
    * @param {number} x - mouse/touch position X axis, move the element on using left (50% default generally)
    * @param {number} y - mouse/touch position Y axis, move the element using top (50% default generally)
    */
-  public execute(x = 0, y = 0): MouseParallax {
-    if(!this._container || this._status === 0)
+  public execute(x = 0, y = 0): this {
+    if (!this._container || this._status === 0)
       return this;
     // get parent container info and apply them to the movement
-    const [ offsetWidth, offsetHeight, parentPositionLeft, parentPositionTop ] = this._calculateContainer();
+    const [offsetWidth, offsetHeight, parentPositionLeft, parentPositionTop] = this._calculateContainer();
     // mouse movement relative to parent container
-    const [ cx, cy ] = this._calculateMouseParallax(x - parentPositionLeft, y - parentPositionTop, offsetWidth, offsetHeight);
+    const [cx, cy] = this._calculateMouseParallax(x - parentPositionLeft, y - parentPositionTop, offsetWidth, offsetHeight);
 
-    for (let i = 0; i < this._items.length; i++)
-      this._calculateTargetMovement(this._items[i], cx, cy);
+    for (const item of this._items)
+      this._calculateTargetMovement(item, cx, cy);
 
     return this;
   }
@@ -271,8 +274,8 @@ export default class MouseParallax {
    * @private
    */
   private _calculateContainer() {
-    if(!this._container)
-      return [0,0,0,0];
+    if (!this._container)
+      return [0, 0, 0, 0];
     const { offsetWidth, offsetHeight } = this._container;
     const { left: parentPositionLeft, top: parentPositionTop } = this._container.getBoundingClientRect();
     return [
@@ -293,13 +296,14 @@ export default class MouseParallax {
    */
   private _calculateTargetMovement(item?: IMouseParallaxItem, cx = 0, cy = 0) {
     // element could have been removed?
-    if (!item || !item.element)
+    if (!item?.element)
       return;
 
     // target item values + defaults
     const {
+      element,
       intensityX = this._defaults.intensityX,
-      intensityY = this._defaults.intensityY,
+      intensityY = this._defaults.intensityY
     } = item;
     // global limit is override by target limit
     let {
@@ -307,9 +311,9 @@ export default class MouseParallax {
       limitY = this._defaults.limitY
     } = item;
     // -1 means "no limit" so I check for a global limit instead
-    if(limitX < 0 && this._globals.limitX && this._globals.limitX > 0)
+    if (limitX < 0 && this._globals.limitX && this._globals.limitX > 0)
       limitX = this._globals.limitX;
-    if(limitY < 0 && this._globals.limitY && this._globals.limitY > 0)
+    if (limitY < 0 && this._globals.limitY && this._globals.limitY > 0)
       limitY = this._globals.limitY;
 
     // movement multiplied by its intensity
@@ -330,7 +334,7 @@ export default class MouseParallax {
       moveY = moveY > 0 ? limitY : -limitY;
 
     // result
-    this._applyMovement(item.element, moveX, moveY);
+    this._applyMovement(element, moveX, moveY);
   }
 
   /**
@@ -341,7 +345,7 @@ export default class MouseParallax {
    * @param y
    * @private
    */
-  private _applyMovement(element: HTMLElement, x = 0, y = 0){
+  private _applyMovement(element: HTMLElement, x = 0, y = 0) {
     element.style.left = (x + 50) + '%';
     element.style.top = (y + 50) + '%';
   }
@@ -349,7 +353,7 @@ export default class MouseParallax {
   /**
    * GETTER throttle
    */
-  public get throttle(){
+  public get throttle() {
     return this._throttle;
   }
 
@@ -357,7 +361,7 @@ export default class MouseParallax {
    * SETTER throttle
    * When it's changed,
    */
-  public set throttle(value: number){
+  public set throttle(value: number) {
     this._throttle = value;
     this.reloadListeners();
   }
@@ -365,9 +369,11 @@ export default class MouseParallax {
   /**
    * Translate events to X and Y coordinates only
    */
-  private _eventHandler = (e: MouseEvent | TouchEvent): void => {
-    const x = (e as MouseEvent).clientX !== undefined ? (e as MouseEvent).clientX : (e as TouchEvent).touches?.[0]?.clientX;
-    const y = (e as MouseEvent).clientY !== undefined ? (e as MouseEvent).clientY : (e as TouchEvent).touches?.[0]?.clientY;
+  private _eventHandler = ($event: MouseEvent | TouchEvent): void => {
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    const x = ($event as MouseEvent).clientX === undefined ? ($event as TouchEvent).touches?.[0]?.clientX : ($event as MouseEvent).clientX;
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    const y = ($event as MouseEvent).clientY === undefined ? ($event as TouchEvent).touches?.[0]?.clientY : ($event as MouseEvent).clientY;
     this.move(x, y);
   };
 
@@ -375,11 +381,11 @@ export default class MouseParallax {
    * Add events to dom
    * @param $document - needed in some cases, like cypress tests
    */
-  public createListeners($document = document): MouseParallax {
+  public createListeners($document = document): this {
     // save pointer for later remove event listeners
     this._functionPointer = throttle(this._eventHandler.bind(this), this._throttle);
-    $document.addEventListener("mousemove", this._functionPointer);
-    $document.addEventListener("touchmove", this._functionPointer);
+    $document.addEventListener('mousemove', this._functionPointer);
+    $document.addEventListener('touchmove', this._functionPointer);
     return this;
   }
 
@@ -387,9 +393,9 @@ export default class MouseParallax {
    * Cleanup of unused eventListeners
    * @param $document - needed in some cases, like cypress tests
    */
-  public destroyListeners($document = document): MouseParallax {
-    $document.removeEventListener("mousemove", this._functionPointer);
-    $document.removeEventListener("touchmove", this._functionPointer);
+  public destroyListeners($document = document): this {
+    $document.removeEventListener('mousemove', this._functionPointer);
+    $document.removeEventListener('touchmove', this._functionPointer);
     return this;
   }
 
@@ -397,7 +403,7 @@ export default class MouseParallax {
    * Reload eventListeners
    * @param $document - needed in some cases, like cypress tests
    */
-  public reloadListeners($document = document): MouseParallax {
+  public reloadListeners($document = document): this {
     this.destroyListeners($document);
     this.createListeners($document);
     return this;
@@ -407,11 +413,10 @@ export default class MouseParallax {
    * Build html parallax
    * @private
    */
-  public createParallax(){
-    for (let i = this._items.length; i--; )
+  public createParallax() {
+    for (let i = this._items.length; i--;)
       // element could have been removed?
-      if(this._items[i]?.element)
-        this.applyParallax(this._items[i]);
+      this.applyParallax(this._items[i]);
   }
 
   /**
@@ -419,19 +424,21 @@ export default class MouseParallax {
    *
    * @param item
    */
-  public applyParallax(item: IMouseParallaxItem){
+  public applyParallax(item?: IMouseParallaxItem) {
+    if (!item)
+      return;
     const { element, position } = item;
     let { speed = this._defaults.speed } = item;
 
     // apply global speed
-    if(this._globals.speed && this._globals.speed > 0)
+    if (this._globals.speed && this._globals.speed > 0)
       speed *= this._globals.speed;
 
     // necessary rules for parallax movement
     Object.assign(element.style, this._requiredCss);
 
     // speed modifier
-    if(speed > 0){
+    if (speed > 0) {
       // pre existing transitions
       const { transition } = getComputedStyle(element);
       // apply speed
@@ -439,7 +446,7 @@ export default class MouseParallax {
     }
 
     // position only if specified
-    if(position)
+    if (position)
       element.style.zIndex = position.toString();
 
     return this;
@@ -449,7 +456,7 @@ export default class MouseParallax {
    * All around function.
    * Prepare css and create listeners to start parallax
    */
-  public build(): MouseParallax {
+  public build(): this {
     this.start();
     this.createParallax();
     this.createListeners();
@@ -459,7 +466,7 @@ export default class MouseParallax {
   /**
    * Reload if changes where made (to items or particular rules)
    */
-  public reload(): MouseParallax {
+  public reload(): this {
     this.createParallax();
     this.reloadListeners();
     return this;
@@ -469,7 +476,7 @@ export default class MouseParallax {
    * Remove listeners and hard stop parallax
    * No need to remove custom CSS inserted with createParallax
    */
-  public destroy(): MouseParallax {
+  public destroy(): this {
     // TODO remove css
     this._items = [];
     this.stop();
@@ -488,7 +495,7 @@ export default class MouseParallax {
    *
    * @return {number, number} - new X and Y positions calculated on the parent container
    */
-  private _calculateMouseParallax(x = 0, y = 0, w = 0, h = 0) :[number, number] {
+  private _calculateMouseParallax(x = 0, y = 0, w = 0, h = 0): [number, number] {
     return [
       w === 0 ? 0 : ((x - w / 2) / w),
       h === 0 ? 0 : ((y - h / 2) / h)
@@ -510,22 +517,22 @@ export default class MouseParallax {
     };
 
     // dataset <=> rules pairs
-    const factory: Array<[string, Array<keyof IMouseParallaxInstructions>]> = [
-      [this.datasetPrefix + "Intensity", ["intensityX", "intensityY"]],
-      [this.datasetPrefix + "IntensityX", ["intensityX"]],
-      [this.datasetPrefix + "IntensityY", ["intensityY"]],
-      [this.datasetPrefix + "Limit", ["limitX", "limitY"]],
-      [this.datasetPrefix + "LimitX", ["limitX"]],
-      [this.datasetPrefix + "LimitY", ["limitY"]],
-      [this.datasetPrefix + "Speed", ["speed"]],
+    const factory: [string, (keyof IMouseParallaxInstructions)[]][] = [
+      [this.datasetPrefix + 'Intensity', ['intensityX', 'intensityY']],
+      [this.datasetPrefix + 'IntensityX', ['intensityX']],
+      [this.datasetPrefix + 'IntensityY', ['intensityY']],
+      [this.datasetPrefix + 'Limit', ['limitX', 'limitY']],
+      [this.datasetPrefix + 'LimitX', ['limitX']],
+      [this.datasetPrefix + 'LimitY', ['limitY']],
+      [this.datasetPrefix + 'Speed', ['speed']]
     ];
 
     // Build rules
-    factory.forEach(([dataset, properties]) => {
-      const value = parseFloat(element.dataset[dataset] || "");
-      if(value || value === 0)
-        properties.forEach(prop => instruction[prop] = value);
-    });
+    for (const [dataset, properties] of factory) {
+      const value = Number.parseFloat(element.dataset[dataset] ?? '');
+      if (value || value === 0)
+        for (const property of properties) instruction[property] = value;
+    }
 
     return instruction;
   }
