@@ -14,7 +14,7 @@
     "outDir": "./dist",
     "declaration": true,
     "declarationMap": true,
-    "declarationDir": "./types",
+    "declarationDir": "./dist/types",
     "baseUrl": "src",
     "lib": [
       "dom",
