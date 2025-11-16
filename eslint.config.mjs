@@ -1,7 +1,7 @@
-import eslint from '@eslint/js'
-import globals from 'globals'
-import tseslint from 'typescript-eslint'
-import eslintPluginUnicorn from 'eslint-plugin-unicorn'
+import eslint from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+import eslintPluginUnicorn from 'eslint-plugin-unicorn';
 
 export default tseslint.config(
   {
@@ -10,7 +10,7 @@ export default tseslint.config(
       'node_modules',
       'eslint.config.mjs',
       'cypress',
-      'docs',
+      'docs'
     ]
   },
 
@@ -45,7 +45,8 @@ export default tseslint.config(
   {
     languageOptions: {
       parserOptions: {
-        projectService: true,
+        // projectService: true, this would create problems with tests, better to use a specific tsconfig
+        project: ['./tsconfig.eslint.json'],
         tsconfigRootDir: import.meta.dirname
       }
     }
@@ -75,8 +76,8 @@ export default tseslint.config(
       // '@typescript-eslint/no-confusing-void-expression': 'off',
       '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
 
-      "@typescript-eslint/restrict-plus-operands": [
-        "error",
+      '@typescript-eslint/restrict-plus-operands': [
+        'error',
         {
           allowNumberAndString: true
         }
@@ -165,10 +166,10 @@ export default tseslint.config(
             },
             'ref': {
               'reference': false
-            },
+            }
           }
         }
-      ],
+      ]
 
       // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/HEAD/docs/rules/string-content.md
       // 'unicorn/string-content': [
@@ -212,7 +213,7 @@ export default tseslint.config(
   {
     files: ['app/stores/*'],
     rules: {
-      'unicorn/consistent-function-scoping': 'off',
+      'unicorn/consistent-function-scoping': 'off'
     }
   },
 
@@ -220,18 +221,21 @@ export default tseslint.config(
     files: ['tests/**/*', '**/*.spec.ts', '**/*.test.ts', '**/*.d.ts'],
     rules: {
       'unicorn/filename-case': 'off',
-      'unicorn/prevent-abbreviations': 'off',
+      'unicorn/prevent-abbreviations': 'off'
     }
   },
 
 
   {
-    files: ['tests/**/*', '**/*.spec.ts', '**/*.test.ts'],
-
+    files: ['tests/**/*', '*.spec.ts', '*.test.ts'],
+    extends: [
+      tseslint.configs.recommended
+    ],
     languageOptions: {
       globals: {
-        ...globals.jest
-      }
+        ...globals.jest,
+        ...globals.browser
+      },
     }
   }
-)
+);

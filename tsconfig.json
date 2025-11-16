@@ -7,31 +7,24 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "sourceMap": true,
-    "forceConsistentCasingInFileNames": true,
     "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
-    "outDir": "./dist",
-    "declaration": true,
-    "declarationMap": true,
-    "declarationDir": "./dist/types",
     "baseUrl": "src",
     "lib": [
       "dom",
       "esnext"
     ],
-    "types": [
-      "node",
-      "@types/jest"
-    ]
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "declaration": true,
+    "declarationMap": true,
+    "declarationDir": "./dist/types"
   },
   "include": [
-    "./src/**/*",
-    "./tests/**/*",
-    "./types/**/*"
+    "src"
   ],
   "exclude": [
-    "./node_modules",
-    "./dist"
+    "node_modules",
+    "dist"
   ]
 }
