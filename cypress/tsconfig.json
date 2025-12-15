@@ -4,11 +4,14 @@
     "sourceMap": false,
     "types": [
       "cypress"
-    ]
+    ],
+    "isolatedModules": false
   },
+  "baseUrl": "./",
   "include": [
-    "../node_modules/cypress/**/*.ts",
     "../cypress.config.ts",
-    "*.cy.ts"
+    "**/*.cy.ts",
+    "**/*.cy.js",
+    "**/*.d.ts"
   ]
 }

@@ -1,62 +1,54 @@
-import eslint from '@eslint/js';
-import globals from 'globals';
-import tseslint from 'typescript-eslint';
-import eslintPluginUnicorn from 'eslint-plugin-unicorn';
+import eslint from '@eslint/js'
+import globals from 'globals'
+import tseslint from 'typescript-eslint'
+import eslintPluginUnicorn from 'eslint-plugin-unicorn'
 
 export default tseslint.config(
+  /**
+   * Excluded files
+   */
   {
-    ignores: [
-      'dist',
-      'node_modules',
-      'eslint.config.mjs',
-      'cypress',
-      'docs'
-    ]
+    ignores: ['dist', 'node_modules', 'eslint.config.mjs', 'cypress', 'docs']
   },
 
   /**
-   *
+   * Base eslint
    */
   eslint.configs.recommended,
 
   /**
-   *
+   * Typescript presets
    */
-  tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.recommended,
+  ...tseslint.configs.recommendedTypeChecked,
+  ...tseslint.configs.strictTypeChecked,
+  ...tseslint.configs.stylisticTypeChecked,
 
   /**
-   *
-   */
-  tseslint.configs.strictTypeChecked,
-
-  /**
-   *
-   */
-  tseslint.configs.stylisticTypeChecked,
-
-  /**
-   *
+   * Unicorn plugin
    */
   eslintPluginUnicorn.configs['flat/recommended'],
 
   /**
-   *
+   * Global parser + dedicated eslint tsconfig
    */
   {
     languageOptions: {
       parserOptions: {
         // projectService: true, this would create problems with tests, better to use a specific tsconfig
         project: ['./tsconfig.eslint.json'],
-        tsconfigRootDir: import.meta.dirname
+        tsconfigRootDir: import.meta.dirname,
+        extraFileExtensions: ['.vue'],
       }
     }
   },
 
   /**
-   *
+   * All global rules
    */
   {
     plugins: {
+      // html, // import html from 'eslint-plugin-html';
       // unicorn: eslintPluginUnicorn
     },
 
@@ -69,13 +61,19 @@ export default tseslint.config(
     },
 
     rules: {
-      'no-console': 'error',
+      /**
+       * Some generic rules that don't require explanations or guides
+       */
+      'no-console': 'warn',
       'no-debugger': 'warn',
-      'no-nested-ternary': 'off',
       '@typescript-eslint/no-non-null-assertion': 'off',
-      // '@typescript-eslint/no-confusing-void-expression': 'off',
-      '@typescript-eslint/use-unknown-in-catch-callback-variable': 'off',
+      'no-nested-ternary': 'off',
+      'unicorn/no-nested-ternary': 'off',
+      'unicorn/prefer-top-level-await': 'off',
 
+      /**
+       *
+       */
       '@typescript-eslint/restrict-plus-operands': [
         'error',
         {
@@ -83,6 +81,10 @@ export default tseslint.config(
         }
       ],
 
+      /**
+       * Naming conventions for everything and
+       * then some specifications based on type of the element
+       */
       '@typescript-eslint/naming-convention': [
         'error',
         {
@@ -142,7 +144,7 @@ export default tseslint.config(
       'unicorn/filename-case': [
         'error',
         {
-          'case': 'camelCase'
+          case: 'camelCase'
         }
       ],
 
@@ -150,7 +152,7 @@ export default tseslint.config(
       'unicorn/catch-error-name': [
         'error',
         {
-          'name': 'error'
+          name: 'error'
         }
       ],
 
@@ -158,18 +160,21 @@ export default tseslint.config(
       'unicorn/prevent-abbreviations': [
         'error',
         {
-          'replacements': {
-            'i': false,
-            'len': false,
-            'opts': {
-              'options': true
+          replacements: {
+            i: false,
+            e: false,
+            len: false,
+            prop: false,
+            props: false,
+            opts: {
+              options: true
             },
-            'ref': {
-              'reference': false
+            ref: {
+              reference: false
             }
           }
         }
-      ]
+      ],
 
       // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/HEAD/docs/rules/string-content.md
       // 'unicorn/string-content': [
@@ -187,36 +192,17 @@ export default tseslint.config(
       //             }
       //         }
       //     }
-      // ]
+      // ],
+
+      // https://github.com/sindresorhus/eslint-plugin-unicorn/blob/main/docs/rules/no-anonymous-default-export.md
+      // Understandable but a pain to follow
+      'unicorn/no-anonymous-default-export': 'off'
     }
   },
 
   /**
-   *
+   * "Special" files names are better to be left untouched
    */
-  // WARNING: Slows down a lot
-  // {
-  //     files: ['**/*.tsx'],
-  //
-  //     rules: {
-  //         'unicorn/filename-case': [
-  //             'error',
-  //             {
-  //                 'case': 'pascalCase'
-  //             }
-  //         ]
-  //     }
-  // },
-
-
-  // Nuxt can cause this to be triggered
-  {
-    files: ['app/stores/*'],
-    rules: {
-      'unicorn/consistent-function-scoping': 'off'
-    }
-  },
-
   {
     files: ['tests/**/*', '**/*.spec.ts', '**/*.test.ts', '**/*.d.ts'],
     rules: {
@@ -224,18 +210,29 @@ export default tseslint.config(
       'unicorn/prevent-abbreviations': 'off'
     }
   },
-
-
   {
-    files: ['tests/**/*', '*.spec.ts', '*.test.ts'],
-    extends: [
-      tseslint.configs.recommended
-    ],
+    files: ['**/*.d.ts'],
+    rules: {
+      '@typescript-eslint/naming-convention': 'off'
+    }
+  },
+
+  /**
+   * Tests specific eslint config
+   */
+  {
+    files: ['tests/**/*', '**/*.spec.ts', '**/*.test.ts'],
+
     languageOptions: {
-      globals: {
-        ...globals.jest,
-        ...globals.browser
+      parserOptions: {
+        project: [
+          './tsconfig.eslint.json',
+          './tsconfig.tests.json'
+        ]
       },
+      globals: {
+        ...globals.jest
+      }
     }
   }
-);
+)
